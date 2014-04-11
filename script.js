@@ -29,23 +29,51 @@ $(document).ready(function() {
 	}
 	
 	//shuffle the deck
-	
+	deck = _.shuffle(deck);
 	
 	var cards_player_1 = [];
 	var cards_player_2 = [];
-	//divide out the cards into the two arrays
-	
+	//divide out the cards into the two arrays	
+	for (var i = 0; i<deck.length; i++){
+		if (i % 2 == 0){
+			cards_player_1.push(deck[i]);
+		} else { cards_player_2.push(deck[i]); }
+	}
+	console.log(cards_player_1);
 	
 	//create a function (algorithm) called "war" that takes two cards as parameters, compares them and returns a winner. A tie should return false.
-	function war() {
-	}
+	function war(card1, card2) {
+		if (card1.number > card2.number){
+			return "1 wins";
+		} else if (card1.number < card2.number) {
+			return "2 wins";
+		} else {return false;}
+	};
 	
+
 	
 	//create a play function
 		//compare the cards
 		//give the winner both cards (at end of deck)
 	function play() {
-		
+		var round = war(cards_player_1[0], cards_player_2[0]);
+		if (round == "1 wins"){
+			cards_player_1.push(cards_player_1.shift(), cards_player_2.shift());
+		} else if (round == "2 wins"){
+			cards_player_2.push(cards_player_1.shift(), cards_player_2.shift());
+		} else {
+			console.log("tie!!")
+			var tiebreaker = war(cards_player_1[3], cards_player_2[3]);
+			if (tiebreaker == "1 wins"){
+				for (var i = 0; i < 3; i++){
+					cards_player_1.push(cards_player_1.shift(), cards_player_2.shift());
+				} 
+			} else if (round == "2 wins"){
+				for (var i = 0; i < 3; i++){
+					cards_player_2.push(cards_player_1.shift(), cards_player_2.shift());
+				} 
+			} else (console.log("what"));
+		}
 		//this function (defined below) will continue to the next turn
 		advance();
 	}
